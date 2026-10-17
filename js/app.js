@@ -8,6 +8,7 @@ import {
   drawDebugSkeleton,
   hitTestOrgan,
   ORGAN_FACTS,
+  loadDiagramImages,
 } from "./digestive-overlay.js";
 
 const MEDIAPIPE_WASM =
@@ -81,8 +82,8 @@ function updateToggleLabels() {
 
   btnLabels.classList.toggle("active", state.showLabels);
   btnLabels.querySelector(".ctrl-label").textContent = state.showLabels
-    ? "標籤：開"
-    : "標籤：關";
+    ? "圖標：開"
+    : "圖標：關";
 
   btnMirror.classList.toggle("active", state.mirror);
   btnMirror.querySelector(".ctrl-label").textContent = state.mirror
@@ -358,7 +359,8 @@ window.addEventListener("resize", () => {
   resizeCanvas();
 });
 
-// Warm-load model in background after first paint (optional snappy start)
+// Preload anatomical diagram + warm UI
+loadDiagramImages().catch((e) => console.warn("Diagram load failed", e));
 updateToggleLabels();
 setControlsEnabled(false);
 
