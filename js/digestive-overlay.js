@@ -281,12 +281,18 @@ function drawDiagramOnTorso(ctx, img, calib, frame, width, height) {
 
   ctx.save();
   ctx.globalAlpha = 0.94;
-  // Soft multiply-ish look over camera: slight brightness
+  // Mild classroom clarity boost (image already recolored offline)
+  try {
+    ctx.filter = "saturate(1.12) contrast(1.04)";
+  } catch (_) {
+    /* older browsers */
+  }
   ctx.translate(midS.x, midS.y);
   ctx.rotate(poseAngle - imgAngle);
   ctx.scale(scaleX, scaleY);
   ctx.translate(-calib.midShoulder.x, -calib.midShoulder.y);
   ctx.drawImage(img, 0, 0);
+  ctx.filter = "none";
   ctx.restore();
 }
 
